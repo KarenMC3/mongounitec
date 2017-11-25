@@ -29,6 +29,7 @@ public class ControladorMensajito{
     
   
     //Metodo GET: buscar Todos
+    @CrossOrigin
    @RequestMapping(value="/mensajito", method=RequestMethod.GET,
            headers = {"Accept=application/json"}) 
    public ArrayList<Mensajito> obtenerTodos()throws Exception{
@@ -36,6 +37,7 @@ public class ControladorMensajito{
    }
    
    //Metodo GET: Buscar por id
+   @CrossOrigin
    @RequestMapping(value="/mensajito/{id}", method=RequestMethod.GET,
            headers = {"Accept=application/json"})
    public Mensajito obtenerPorId(@PathVariable String id)
@@ -44,6 +46,7 @@ public class ControladorMensajito{
    }
    
    //Metodo POST: guardar version para clientes variables (web y desktop)
+   @CrossOrigin
    @RequestMapping(value="/mensajito/{titulo}/{cuerpo}", method=RequestMethod.POST,
            headers = {"Accept=application/json"})
    public Estatus  guardarMensajito(@PathVariable String titulo,
@@ -56,9 +59,10 @@ public class ControladorMensajito{
    }
    
    //Metodo POST :guardar, pero es una version mas pura y efectiva
+   @CrossOrigin
    @RequestMapping(value="/mensajito", method=RequestMethod.POST,
            headers={"Accept=application/json"})
-   public Estatus guardarMenajitoMejorado(@RequestBody String json)
+   public Estatus guardarMensajitoMejorado(@RequestBody String json)
            throws Exception{
          
        //Tranformamos el json a objeto java
@@ -69,6 +73,34 @@ public class ControladorMensajito{
         es.setSuccess(true);
         return es;
    } 
-
+   
+   //Metodo PUT: actualizar
+   @CrossOrigin
+@RequestMapping(value="/mensajito", method=RequestMethod.PUT,
+           headers={"Accept=application/json"})
+   public Estatus actualizarMensajitoMejorado(@RequestBody String json)
+           throws Exception{
+         //Tranformamos el json a objeto java
+       ObjectMapper maper=new ObjectMapper();
+       Mensajito mensa=maper.readValue(json, Mensajito.class);
+        repoMensa.save(mensa);
+        Estatus es=new Estatus();
+        es.setSuccess(true);
+        return es;
+   } 
+   
+   //Metodo DELETE
+   @CrossOrigin
+   @RequestMapping(value="/mensajito/{id}", method=RequestMethod.DELETE,
+           headers={"Accept=application/json"})
+   public Estatus borrarMensajitoMejorado(@PathVariable String id)
+           throws Exception{
+         //Tranformamos el json a objeto java
+     
+        repoMensa.delete(id);
+        Estatus es=new Estatus();
+        es.setSuccess(true);
+        return es;
+   } 
     
 }
